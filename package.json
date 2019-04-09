@@ -22,7 +22,8 @@
     "homebridge": ">=0.2.0"
   },
   "dependencies": {
-    "serialport": "^4.0.1",
-    "bluebird": "^3.3.4"
+    "@serialport/parser-readline": "^2.0.2",
+    "bluebird": "^3.3.4",
+    "serialport": "^7.1.4"
   }
 }

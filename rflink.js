@@ -1,4 +1,5 @@
-var SerialPort = require("serialport").SerialPort;
+var SerialPort = require('serialport')
+var Readline = require('@serialport/parser-readline');
 var Promise = require('bluebird');
 var debug = process.env.hasOwnProperty('RFLINK_DEBUG') ? consoleDebug : function () {
 };
@@ -74,16 +75,16 @@ RFLinkController.prototype._createSerial = function () {
 
                 try {
                   var serial = new SerialPort(self.device, {
-                    baudrate: self._baudrate,
-                    autoOpen: true,
-                    parser: SerialPort.parsers.readline('\r\n')
+                    baudRate: self._baudrate,
+                    autoOpen: true
                   }, function (error) {
                     if ( error ) {
                       debug('RFLink: SerialPort failed to open: ' + error.message);
                       return reject(error);
                     } else {
                       self.serial = serial;
-                      self.serial.on('data', function(data) {
+                      self.parser = self.serial.pipe(new Readline({ delimiter: '\r\n' }));
+                      self.parser.on('data', function(data) {
                         debug('RFLink Data: ' + data);
                         self._dataHandler(data);
                       });
